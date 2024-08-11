@@ -5783,10 +5783,7 @@ GameObject:
   - component: {fileID: 889199080}
   - component: {fileID: 889199078}
   - component: {fileID: 889199077}
-  - component: {fileID: 889199076}
   - component: {fileID: 889199081}
-  - component: {fileID: 889199082}
-  - component: {fileID: 889199083}
   m_Layer: 0
   m_Name: Manager
   m_TagString: Untagged
@@ -5794,27 +5791,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &889199076
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 889199075}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e1d47b8e56de75f498a96847e8f5caf6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  audioSource: {fileID: 889199078}
-  estimator: {fileID: 889199077}
-  lineSRH: {fileID: 1123326785}
-  lineFrequency: {fileID: 238152966}
-  marker: {fileID: 1213156669}
-  textFrequency: {fileID: 483749182}
-  textMin: {fileID: 139943953}
-  textMax: {fileID: 596678781}
-  estimateRate: 30
 --- !u!114 &889199077
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5976,40 +5952,6 @@ MonoBehaviour:
   maxYPos: 430
   arrowTransform: {fileID: 670845628}
   noteText: {fileID: 1598206629}
---- !u!114 &889199082
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 889199075}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8887057719d2cd64da8e95cee97b5b98, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  midiFileName: Yiruma - Rivers Flow In You.mid
-  midiNotes: []
---- !u!114 &889199083
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 889199075}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e0cc22702448a724b836fd22359a5a11, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  midiFIleReader: {fileID: 889199082}
-  timeToXFactor: 300
-  octaveOffset: -1
-  pitchOffset: -4
-  pitchArrow: {fileID: 889199081}
-  estimator: {fileID: 889199077}
-  objectToSpawn: {fileID: 2424334532823505209, guid: 7f77a358086668847ba47489358f0d65, type: 3}
-  parentTransform: {fileID: 1627462702}
 --- !u!1 &1123326783
 GameObject:
   m_ObjectHideFlags: 0
@@ -6454,13 +6396,14 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1948324697}
+  - component: {fileID: 1948324698}
   m_Layer: 0
   m_Name: Visualizer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1948324697
 Transform:
   m_ObjectHideFlags: 0
@@ -6483,6 +6426,27 @@ Transform:
   - {fileID: 1213156669}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1948324698
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1948324696}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e1d47b8e56de75f498a96847e8f5caf6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  audioSource: {fileID: 889199078}
+  estimator: {fileID: 889199077}
+  lineSRH: {fileID: 1123326785}
+  lineFrequency: {fileID: 238152966}
+  marker: {fileID: 1213156669}
+  textFrequency: {fileID: 483749182}
+  textMin: {fileID: 139943953}
+  textMax: {fileID: 596678781}
+  estimateRate: 30
 --- !u!1 &2133360238
 GameObject:
   m_ObjectHideFlags: 0
