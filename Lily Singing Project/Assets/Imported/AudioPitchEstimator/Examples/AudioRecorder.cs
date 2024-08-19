@@ -5,7 +5,7 @@ using UnityEngine;
 public class AudioRecorder : MonoBehaviour
 {
     public AudioSource audioSource;
-    public int duration = 8;
+    public int duration = 2;
 
     void Start()
     {

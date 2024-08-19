@@ -8,4 +8,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Game Assets/Scenes/Main Scene.unity
     guid: 2cda990e2423bbf4892e6590ba056729
+  - enabled: 1
+    path: Assets/Game Assets/Scenes/Note Roll Scene.unity
+    guid: 5b28f4945d5633548ad918d44fa2f38f
   m_configObjects: {}
