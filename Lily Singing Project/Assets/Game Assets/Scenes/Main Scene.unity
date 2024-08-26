@@ -2032,7 +2032,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -0.000030517578, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &621478328
@@ -3433,8 +3433,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8ed9714ccf5c08247aeb214f2b769353, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  estimator: {fileID: 0}
-  audioSource: {fileID: 0}
+  estimator: {fileID: 1103829980}
+  audioSource: {fileID: 1103829982}
   maleFreq:
   - typeName: Bass
     minFrequency: 82
