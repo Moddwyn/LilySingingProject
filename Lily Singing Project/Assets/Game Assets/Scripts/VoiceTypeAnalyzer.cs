@@ -9,10 +9,11 @@ public class VoiceTypeAnalyzer : MonoBehaviour
     public AudioSource audioSource;
 
     [HorizontalLine]
-
     [ReadOnly] public string detectedVoiceType = "Unknown";
+    [ReadOnly] public bool isCapturing = false; // Indicator to show if capturing is in progress
 
     [HorizontalLine]
+    [ReadOnly] public List<float> recordedFrequencies = new List<float>(); // List to display recorded frequencies
 
     public List<VoiceTypeConfig> maleFreq = new List<VoiceTypeConfig>();
     public List<VoiceTypeConfig> femaleFreq = new List<VoiceTypeConfig>();
@@ -25,104 +26,73 @@ public class VoiceTypeAnalyzer : MonoBehaviour
         public float maxFrequency;
     }
 
-    public IEnumerator AnalyzeVoiceType()
+    public float GetFrequency() => estimator.Estimate(audioSource);
+
+    private void Update()
     {
-        // Start recording
-        audioSource.clip = Microphone.Start(null, true, 5, AudioSettings.outputSampleRate);
-        audioSource.loop = false;
-
-        print("Voice Type Analyzer Started");
-
-        // Wait for 5 seconds
-        yield return new WaitForSeconds(5f);
-
-        // Stop recording
-        Microphone.End(null);
-
-        print("Voice Type Analyzer Finished");
-
-        // Analyze the recorded clip
-        audioSource.Play();
-        yield return StartCoroutine(EstimateVoiceType());
+        if (Input.GetKeyDown(KeyCode.A) && !isCapturing)
+        {
+            StartCoroutine(CaptureVoiceType());
+        }
     }
 
-    IEnumerator EstimateVoiceType()
+    private IEnumerator CaptureVoiceType()
     {
-        List<float> frequencies = new List<float>();
+        isCapturing = true; // Indicate that the capturing has started
+        float captureDuration = 5f; // Duration to capture frequencies
+        float captureInterval = 1f; // Interval at which frequencies are sampled
+        recordedFrequencies.Clear(); // Clear the list of recorded frequencies
 
-        // Collect frequencies for 5 seconds
-        float elapsedTime = 0f;
-        while (elapsedTime < 5f)
+        float elapsed = 0f;
+        while (elapsed < captureDuration)
         {
-            float frequency = estimator.Estimate(audioSource);
-            if (!float.IsNaN(frequency))
+            float currentFrequency = GetFrequency();
+
+            if (!float.IsNaN(currentFrequency)) // Check if the frequency is valid
             {
-                frequencies.Add(frequency);
+                recordedFrequencies.Add(currentFrequency);
             }
-            elapsedTime += Time.deltaTime;
-            yield return null;
+            
+            elapsed += captureInterval;
+            yield return new WaitForSeconds(captureInterval);
         }
 
-        // Calculate average frequency
-        if (frequencies.Count > 0)
-        {
-            float averageFrequency = 0f;
-            foreach (float freq in frequencies)
-            {
-                averageFrequency += freq;
-            }
-            averageFrequency /= frequencies.Count;
-
-            // Determine the voice type based on the average frequency
-            detectedVoiceType = DetermineVoiceType(averageFrequency);
-        }
-        else
-        {
-            detectedVoiceType = "Unknown";
-        }
-
-        print("Voice Type Detected: " + detectedVoiceType);
+        detectedVoiceType = DetermineVoiceType(recordedFrequencies);
+        isCapturing = false; // Indicate that the capturing has ended
     }
 
-    string DetermineVoiceType(float averageFrequency)
+    private string DetermineVoiceType(List<float> frequencies)
     {
-        // Check male frequencies
+        if (frequencies.Count == 0)
+        {
+            return "Unknown"; // If no valid frequencies were recorded
+        }
+
+        // Calculate the average frequency
+        float averageFrequency = 0f;
+        foreach (float freq in frequencies)
+        {
+            averageFrequency += freq;
+        }
+        averageFrequency /= frequencies.Count;
+
+        // Compare the average frequency against the configured ranges
         foreach (var config in maleFreq)
         {
             if (averageFrequency >= config.minFrequency && averageFrequency <= config.maxFrequency)
             {
-                return config.typeName;
+                return config.typeName + " (Male)";
             }
         }
 
-        // Check female frequencies
         foreach (var config in femaleFreq)
         {
             if (averageFrequency >= config.minFrequency && averageFrequency <= config.maxFrequency)
             {
-                return config.typeName;
+                return config.typeName + " (Female)";
             }
         }
 
         return "Unknown";
-    }
-
-    public float GetFrequency() => estimator.Estimate(audioSource);
-
-    public VoiceTypeConfig GetDetectedVoiceConfig()
-    {
-        foreach (var config in maleFreq)
-        {
-            if (config.typeName == detectedVoiceType)
-                return config;
-        }
-
-        foreach (var config in femaleFreq)
-        {
-            if (config.typeName == detectedVoiceType)
-                return config;
-        }
-
-        return null;
     }
 }

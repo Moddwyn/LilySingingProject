@@ -6046,7 +6046,7 @@ MonoBehaviour:
   notePlacer: {fileID: 889199082}
   voiceTypeAnalyzer: {fileID: 1976391437}
   pitchEstimator: {fileID: 889199077}
-  audioMixer: {fileID: 24100000, guid: 1ef44df02b1220d4f929f14b16bba70c, type: 2}
+  audioMixer: {fileID: 24100000, guid: 853aa48fa6b5a3848a5f6dd07a7ca875, type: 2}
   songSource: {fileID: 889199084}
   offsetStart: 25
   pitchOffset: 1
@@ -6060,7 +6060,7 @@ AudioSource:
   m_GameObject: {fileID: 889199075}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 7189324895520052253, guid: 1ef44df02b1220d4f929f14b16bba70c, type: 2}
+  OutputAudioMixerGroup: {fileID: 24300002, guid: 853aa48fa6b5a3848a5f6dd07a7ca875, type: 2}
   m_audioClip: {fileID: 8300000, guid: 3f90e82062b73a449a98ad1c7551da98, type: 3}
   m_PlayOnAwake: 0
   m_Volume: 0.5
