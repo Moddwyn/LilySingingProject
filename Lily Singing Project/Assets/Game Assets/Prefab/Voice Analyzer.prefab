@@ -176,24 +176,36 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   estimator: {fileID: 2516146702733611787}
   audioSource: {fileID: 4542938049303875136}
-  detectedVoiceType: Unknown
+  detectedVoiceType:
+    typeName: 
+    minFrequency: 0
+    maxFrequency: 0
+    suggestedPitch: 0
+  isCapturing: 0
+  recordedFrequencies: []
   maleFreq:
   - typeName: Bass
     minFrequency: 82
     maxFrequency: 330
+    suggestedPitch: 0.57
   - typeName: Baritone
     minFrequency: 98
     maxFrequency: 392
+    suggestedPitch: 0.66
   - typeName: Tenor
     minFrequency: 130
     maxFrequency: 523
+    suggestedPitch: 0.74
   femaleFreq:
   - typeName: Alto
-    minFrequency: 130
-    maxFrequency: 523
+    minFrequency: 174
+    maxFrequency: 698
+    suggestedPitch: 1
   - typeName: Mezzo-Soprano
     minFrequency: 196
-    maxFrequency: 698
+    maxFrequency: 880
+    suggestedPitch: 1.22
   - typeName: Soprano
     minFrequency: 261
     maxFrequency: 1046
+    suggestedPitch: 1.48

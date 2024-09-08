@@ -910,7 +910,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -1398.9998, y: -0.39501953}
+  m_AnchoredPosition: {x: 2650, y: 1159}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &108503497
@@ -1378,8 +1378,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -0.000038146973, y: -120.94}
-  m_SizeDelta: {x: 608, y: 838.13}
+  m_AnchoredPosition: {x: 27.19, y: -110.31}
+  m_SizeDelta: {x: 1866, y: 859.4}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &216085469
 MonoBehaviour:
@@ -1589,7 +1589,6 @@ GameObject:
   m_Component:
   - component: {fileID: 313262304}
   - component: {fileID: 313262305}
-  - component: {fileID: 313262307}
   m_Layer: 0
   m_Name: Lip Trills
   m_TagString: Untagged
@@ -1622,7 +1621,7 @@ PlayableDirector:
   m_Enabled: 1
   serializedVersion: 3
   m_PlayableAsset: {fileID: 11400000, guid: 5fb906d6cb5e9ca47973246ab67a463e, type: 2}
-  m_InitialState: 0
+  m_InitialState: 1
   m_WrapMode: 2
   m_DirectorUpdateMode: 1
   m_InitialTime: 0
@@ -1635,48 +1634,6 @@ PlayableDirector:
     value: {fileID: 2100566392}
   m_ExposedReferences:
     m_References: []
---- !u!114 &313262307
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 313262303}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e52de21a22b6dd44c9cc19f810c65059, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Events:
-    m_Signals:
-    - {fileID: 11400000, guid: c32f93bbae0456e42b0c2bc32d787027, type: 2}
-    m_Events:
-    - m_PersistentCalls:
-        m_Calls:
-        - m_Target: {fileID: 2100566393}
-          m_TargetAssemblyTypeName: UnityEngine.Video.VideoPlayer, UnityEngine
-          m_MethodName: set_clip
-          m_Mode: 2
-          m_Arguments:
-            m_ObjectArgument: {fileID: 32900000, guid: 22df49f3b55dd5c428437bbc1b6142de, type: 3}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Video.VideoClip, UnityEngine
-            m_IntArgument: 0
-            m_FloatArgument: 0
-            m_StringArgument: 
-            m_BoolArgument: 0
-          m_CallState: 2
-        - m_Target: {fileID: 2100566393}
-          m_TargetAssemblyTypeName: UnityEngine.Video.VideoPlayer, UnityEngine
-          m_MethodName: Play
-          m_Mode: 1
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 0
-            m_FloatArgument: 0
-            m_StringArgument: 
-            m_BoolArgument: 0
-          m_CallState: 2
 --- !u!1 &315909325
 GameObject:
   m_ObjectHideFlags: 0
@@ -1979,8 +1936,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -0.25, y: 1080}
-  m_SizeDelta: {x: 608, y: 1080}
+  m_AnchoredPosition: {x: 0.015076, y: 1080}
+  m_SizeDelta: {x: 1920.4, y: 1080}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &359653180
 MonoBehaviour:
@@ -2194,8 +2151,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -2.369995, y: -155.5}
-  m_SizeDelta: {x: 523.02, y: 664.24}
+  m_AnchoredPosition: {x: -0.0000076293945, y: -71.57}
+  m_SizeDelta: {x: 1818.97, y: 831.37}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &364525942
 MonoBehaviour:
@@ -2500,6 +2457,8 @@ PlayableDirector:
     value: {fileID: 907514201}
   - key: {fileID: -2930266036451154693, guid: 948f5eee98606492c9116a1cbcfbb8d4, type: 2}
     value: {fileID: 29763922}
+  - key: {fileID: -581139038993384834, guid: 948f5eee98606492c9116a1cbcfbb8d4, type: 2}
+    value: {fileID: 0}
   m_ExposedReferences:
     m_References: []
 --- !u!1 &470111618
@@ -2957,7 +2916,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 1200, y: 0.0048828125}
+  m_AnchoredPosition: {x: 2637, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &546282901
@@ -3479,8 +3438,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0.25, y: -1080}
-  m_SizeDelta: {x: 608, y: 1080}
+  m_AnchoredPosition: {x: 0.014984, y: -1080}
+  m_SizeDelta: {x: 1920.4, y: 1080}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &662561144
 MonoBehaviour:
@@ -3555,7 +3514,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 59.45999, y: -53.76001}
+  m_AnchoredPosition: {x: 59.460022, y: -53.76001}
   m_SizeDelta: {x: 75.91, y: 75.91}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &678759684
@@ -3741,7 +3700,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -204, y: 263}
+  m_AnchoredPosition: {x: -801.00006, y: 290}
   m_SizeDelta: {x: 76.49, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &723783397
@@ -4370,7 +4329,7 @@ MonoBehaviour:
   m_ChildAlignment: 1
   m_StartCorner: 0
   m_StartAxis: 1
-  m_CellSize: {x: 530, y: 95}
+  m_CellSize: {x: 1675, y: 95}
   m_Spacing: {x: 0, y: 29.11}
   m_Constraint: 1
   m_ConstraintCount: 1
@@ -5042,8 +5001,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 608.5, y: 3240}
+  m_AnchoredPosition: {x: 0.014374, y: 0}
+  m_SizeDelta: {x: 1920.4, y: 3240}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1058262314
 GameObject:
@@ -5351,29 +5310,39 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   estimator: {fileID: 1103829980}
   audioSource: {fileID: 1103829982}
-  detectedVoiceType: Unknown
+  detectedVoiceType:
+    typeName: 
+    minFrequency: 0
+    maxFrequency: 0
+    suggestedPitch: 0
   isCapturing: 0
   recordedFrequencies: []
   maleFreq:
   - typeName: Bass
     minFrequency: 82
     maxFrequency: 330
+    suggestedPitch: 0
   - typeName: Baritone
     minFrequency: 98
     maxFrequency: 392
+    suggestedPitch: 0
   - typeName: Tenor
     minFrequency: 130
     maxFrequency: 523
+    suggestedPitch: 0
   femaleFreq:
   - typeName: Alto
     minFrequency: 130
     maxFrequency: 523
+    suggestedPitch: 0
   - typeName: Mezzo-Soprano
     minFrequency: 196
     maxFrequency: 698
+    suggestedPitch: 0
   - typeName: Soprano
     minFrequency: 261
     maxFrequency: 1046
+    suggestedPitch: 0
 --- !u!1 &1216356151
 GameObject:
   m_ObjectHideFlags: 0
@@ -5768,7 +5737,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
-  m_AnchoredPosition: {x: 0, y: -184}
+  m_AnchoredPosition: {x: -0.000051498, y: -123}
   m_SizeDelta: {x: 339.17, y: 62.56}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1367557334
@@ -6053,7 +6022,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -204, y: -288}
+  m_AnchoredPosition: {x: -801.00006, y: -261}
   m_SizeDelta: {x: 76.49, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1408394795
@@ -6392,8 +6361,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
-  m_AnchoredPosition: {x: -2.37, y: -272}
-  m_SizeDelta: {x: 488.47, y: 94.81}
+  m_AnchoredPosition: {x: -2.37, y: -114.66998}
+  m_SizeDelta: {x: 488.47, y: 70.15}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1462085308
 MonoBehaviour:
@@ -6442,7 +6411,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 83.65
+  m_fontSize: 61.6
   m_fontSizeBase: 80
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -7553,7 +7522,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1713935301}
   - component: {fileID: 1713935302}
-  - component: {fileID: 1713935303}
   m_Layer: 0
   m_Name: Siren Timeline
   m_TagString: Untagged
@@ -7586,7 +7554,7 @@ PlayableDirector:
   m_Enabled: 1
   serializedVersion: 3
   m_PlayableAsset: {fileID: 11400000, guid: 807db6b8bb5d44e6f8d18622278a9c32, type: 2}
-  m_InitialState: 1
+  m_InitialState: 0
   m_WrapMode: 2
   m_DirectorUpdateMode: 1
   m_InitialTime: 0
@@ -7601,48 +7569,6 @@ PlayableDirector:
     m_References:
     - 4bd29d27adc47471195dab272ceaea99: {fileID: 2100566390}
     - e9db1097d6a5a497aab0df69f7c166a6: {fileID: 29763922}
---- !u!114 &1713935303
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1713935300}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e52de21a22b6dd44c9cc19f810c65059, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Events:
-    m_Signals:
-    - {fileID: 11400000, guid: c32f93bbae0456e42b0c2bc32d787027, type: 2}
-    m_Events:
-    - m_PersistentCalls:
-        m_Calls:
-        - m_Target: {fileID: 2100566393}
-          m_TargetAssemblyTypeName: UnityEngine.Video.VideoPlayer, UnityEngine
-          m_MethodName: set_clip
-          m_Mode: 2
-          m_Arguments:
-            m_ObjectArgument: {fileID: 32900000, guid: 22df49f3b55dd5c428437bbc1b6142de, type: 3}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Video.VideoClip, UnityEngine
-            m_IntArgument: 0
-            m_FloatArgument: 0
-            m_StringArgument: 
-            m_BoolArgument: 0
-          m_CallState: 2
-        - m_Target: {fileID: 2100566393}
-          m_TargetAssemblyTypeName: UnityEngine.Video.VideoPlayer, UnityEngine
-          m_MethodName: Play
-          m_Mode: 1
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 0
-            m_FloatArgument: 0
-            m_StringArgument: 
-            m_BoolArgument: 0
-          m_CallState: 2
 --- !u!1 &1737595554
 GameObject:
   m_ObjectHideFlags: 0
@@ -7680,7 +7606,7 @@ RectTransform:
   m_AnchorMin: {x: 1, y: 0}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 20, y: 0}
+  m_SizeDelta: {x: 59.34, y: 0}
   m_Pivot: {x: 1, y: 1}
 --- !u!114 &1737595556
 MonoBehaviour:
@@ -7937,7 +7863,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -203.99997, y: 25}
+  m_AnchoredPosition: {x: -801, y: 52.000004}
   m_SizeDelta: {x: 76.49, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1773511590
@@ -8600,7 +8526,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -204, y: -192}
+  m_AnchoredPosition: {x: -801, y: -165}
   m_SizeDelta: {x: 76.49, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1996125391
@@ -8753,8 +8679,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0.0049943924}
-  m_SizeDelta: {x: 608, y: 1080}
+  m_AnchoredPosition: {x: 0.0050964, y: 0.0049943924}
+  m_SizeDelta: {x: 1920.4, y: 1080}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2005035578
 MonoBehaviour:
@@ -8963,7 +8889,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 59.45999, y: -53.76001}
+  m_AnchoredPosition: {x: 59.460022, y: -53.76001}
   m_SizeDelta: {x: 75.91, y: 75.91}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2025891905
@@ -9148,7 +9074,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -204, y: 140}
+  m_AnchoredPosition: {x: -801.00006, y: 167}
   m_SizeDelta: {x: 76.49, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2040745992
@@ -9610,7 +9536,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -204, y: -86}
+  m_AnchoredPosition: {x: -801.00006, y: -58.999996}
   m_SizeDelta: {x: 76.49, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2107784846

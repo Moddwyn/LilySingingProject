@@ -9,7 +9,7 @@ public class VoiceTypeAnalyzer : MonoBehaviour
     public AudioSource audioSource;
 
     [HorizontalLine]
-    [ReadOnly] public string detectedVoiceType = "Unknown";
+    [ReadOnly] public VoiceTypeConfig detectedVoiceType;
     [ReadOnly] public bool isCapturing = false; // Indicator to show if capturing is in progress
 
     [HorizontalLine]
@@ -22,13 +22,19 @@ public class VoiceTypeAnalyzer : MonoBehaviour
     public class VoiceTypeConfig
     {
         public string typeName;
-        public float minFrequency;
-        public float maxFrequency;
+        public int minFrequency;
+        public int maxFrequency;
+        public float suggestedPitch;
     }
 
     public float GetFrequency() => estimator.Estimate(audioSource);
 
-    private void Update()
+    void Start()
+    {
+        detectedVoiceType = null;
+    }
+
+    void Update()
     {
         if (Input.GetKeyDown(KeyCode.A) && !isCapturing)
         {
@@ -39,6 +45,7 @@ public class VoiceTypeAnalyzer : MonoBehaviour
     private IEnumerator CaptureVoiceType()
     {
         isCapturing = true; // Indicate that the capturing has started
+        print("Starting voice analysis...");
         float captureDuration = 5f; // Duration to capture frequencies
         float captureInterval = 1f; // Interval at which frequencies are sampled
         recordedFrequencies.Clear(); // Clear the list of recorded frequencies
@@ -52,20 +59,21 @@ public class VoiceTypeAnalyzer : MonoBehaviour
             {
                 recordedFrequencies.Add(currentFrequency);
             }
-            
+
             elapsed += captureInterval;
             yield return new WaitForSeconds(captureInterval);
         }
 
         detectedVoiceType = DetermineVoiceType(recordedFrequencies);
+        print("Detecting voice type: " + detectedVoiceType.typeName);
         isCapturing = false; // Indicate that the capturing has ended
     }
 
-    private string DetermineVoiceType(List<float> frequencies)
+    private VoiceTypeConfig DetermineVoiceType(List<float> frequencies)
     {
         if (frequencies.Count == 0)
         {
-            return "Unknown"; // If no valid frequencies were recorded
+            return null; // If no valid frequencies were recorded
         }
 
         // Calculate the average frequency
@@ -81,7 +89,9 @@ public class VoiceTypeAnalyzer : MonoBehaviour
         {
             if (averageFrequency >= config.minFrequency && averageFrequency <= config.maxFrequency)
             {
-                return config.typeName + " (Male)";
+                estimator.frequencyMin = config.minFrequency;
+                estimator.frequencyMax = config.maxFrequency;
+                return config; // Return the matching VoiceTypeConfig for male
             }
         }
 
@@ -89,10 +99,12 @@ public class VoiceTypeAnalyzer : MonoBehaviour
         {
             if (averageFrequency >= config.minFrequency && averageFrequency <= config.maxFrequency)
             {
-                return config.typeName + " (Female)";
+                estimator.frequencyMin = config.minFrequency;
+                estimator.frequencyMax = config.maxFrequency;
+                return config; // Return the matching VoiceTypeConfig for female
             }
         }
 
-        return "Unknown";
+        return null; // Return null if no match is found
     }
 }

@@ -5968,7 +5968,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   audioSource: {fileID: 889199078}
-  duration: 1
+  duration: 7
 --- !u!114 &889199081
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6044,12 +6044,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   notePlacer: {fileID: 889199082}
-  voiceTypeAnalyzer: {fileID: 1976391437}
+  typeAnalyzer: {fileID: 1976391437}
   pitchEstimator: {fileID: 889199077}
   audioMixer: {fileID: 24100000, guid: 853aa48fa6b5a3848a5f6dd07a7ca875, type: 2}
   songSource: {fileID: 889199084}
   offsetStart: 25
-  pitchOffset: 1
+  pitchMultiplier: 0.57
   currentTime: 0
 --- !u!82 &889199084
 AudioSource:
