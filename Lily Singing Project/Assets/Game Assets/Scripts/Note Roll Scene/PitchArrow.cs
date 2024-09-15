@@ -5,7 +5,9 @@ using UnityEngine;
 
 public class PitchArrow : MonoBehaviour
 {
-    public AudioPitchEstimator estimator;
+    public VoiceFrequencyAnalyzer frequencyAnalyzer;
+    public VoiceTypeAnalyzer typeAnalyzer;
+    public MidiFileReader midiFileReader;
     public AudioSource audioSource;
 
     [Space(20)]
@@ -16,22 +18,26 @@ public class PitchArrow : MonoBehaviour
 
     void Update()
     {
-        float frequency = GetFrequency();
+        if (typeAnalyzer.detectedVoiceType == null) return;
+
+        float frequency = frequencyAnalyzer.frequency;
+        Note note = Note.GetNoteFromFrequency(frequency);
         if (frequency > 0)
         {
-            float newYPos = MapFrequencyToPosition(frequency, estimator.frequencyMin, estimator.frequencyMax, yRange.x, yRange.y);
+            float minFrequency = typeAnalyzer.detectedVoiceType.minFrequency-50;
+            float maxFrequency = typeAnalyzer.detectedVoiceType.maxFrequency+50;
+
+            // Note shiftedNote = Note.GetNextNoteWithOctave(note);
+
+            float newYPos = RollManager.MapFrequencyToPosition(note.frequency, minFrequency, maxFrequency, yRange.x, yRange.y);
             SetArrowPosition(newYPos);
 
-            noteText.text = $"{GetNameFromFrequency(frequency)} | {(int)frequency}Hz";
+            noteText.text = $"{Note.GetNoteNameFormatted(note.noteName)}{note.octave} | {(int)frequency}Hz";
         }
 
     }
 
-    public float MapFrequencyToPosition(float frequency, float minFreq, float maxFreq, float minY, float maxY)
-    {
-        float t = Mathf.InverseLerp(minFreq, maxFreq, frequency);
-        return Mathf.Lerp(minY, maxY, t);
-    }
+    
 
     void SetArrowPosition(float yPos)
     {
@@ -39,19 +45,4 @@ public class PitchArrow : MonoBehaviour
         newPos.y = yPos;
         arrowTransform.anchoredPosition = Vector2.MoveTowards(arrowTransform.anchoredPosition, newPos, Time.deltaTime * 1000 * moveSpeed);
     }
-
-    public string GetNameFromFrequency(float frequency)
-    {
-        var noteNumber = Mathf.RoundToInt(12 * Mathf.Log(frequency / 440) / Mathf.Log(2) + 69);
-        string[] names = {
-        "C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B"
-        };
-        int octave = (noteNumber / 12) - 1; // Calculate the octave number
-        string noteName = names[noteNumber % 12];
-        return noteName + octave; // Combine note name and octave
-    }
-
-    public string GetNoteNameFromCurrFrequency() => GetNameFromFrequency(GetFrequency());
-
-    public float GetFrequency() => estimator.Estimate(audioSource);
 }

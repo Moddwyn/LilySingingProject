@@ -1,18 +1,41 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using NaughtyAttributes;
+using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
+
+public enum VoiceType
+{
+    Bass,
+    Baritone,
+    Tenor,
+    Alto,
+    MezzoSoprano,
+    Soprano,
+    Unknown
+}
 
 public class VoiceTypeAnalyzer : MonoBehaviour
 {
-    public AudioPitchEstimator estimator;
+    public VoiceFrequencyAnalyzer analyzer;
     public AudioSource audioSource;
+    public UIVoiceNoteChecker lowNoteChcker;
+    public UIVoiceNoteChecker highNoteChecker;
+
+    [HorizontalLine]
+
+    public TMP_Text resultText;
+    public Button continueButton;
 
     [HorizontalLine]
     [ReadOnly] public VoiceTypeConfig detectedVoiceType;
     [ReadOnly] public bool isCapturing = false; // Indicator to show if capturing is in progress
 
     [HorizontalLine]
+    [ReadOnly] public Note lowestRecorded;
+    [ReadOnly] public Note highestRecorded;
     [ReadOnly] public List<float> recordedFrequencies = new List<float>(); // List to display recorded frequencies
 
     public List<VoiceTypeConfig> maleFreq = new List<VoiceTypeConfig>();
@@ -21,31 +44,36 @@ public class VoiceTypeAnalyzer : MonoBehaviour
     [System.Serializable]
     public class VoiceTypeConfig
     {
-        public string typeName;
+        public VoiceType voiceType;
         public int minFrequency;
         public int maxFrequency;
         public float suggestedPitch;
     }
 
-    public float GetFrequency() => estimator.Estimate(audioSource);
-
     void Start()
     {
         detectedVoiceType = null;
+
+        continueButton.gameObject.SetActive(false);
     }
 
-    void Update()
+    public void SetFinalVoiceType()
     {
-        if (Input.GetKeyDown(KeyCode.A) && !isCapturing)
+        if(lowestRecorded.frequency == 0 || highestRecorded.frequency == 0)
         {
-            StartCoroutine(CaptureVoiceType());
+            return;
         }
+        detectedVoiceType = DetermineVoiceType(lowestRecorded.frequency, highestRecorded.frequency);
+        resultText.text = $"You are a {detectedVoiceType.voiceType}!";
+
+        continueButton.gameObject.SetActive(true);
     }
 
-    private IEnumerator CaptureVoiceType()
+    public IEnumerator CaptureVoiceType(Action<float> OnProgress ,Action<float> OnFinish)
     {
         isCapturing = true; // Indicate that the capturing has started
-        print("Starting voice analysis...");
+
+        print($"Starting voice analysis...");
         float captureDuration = 5f; // Duration to capture frequencies
         float captureInterval = 1f; // Interval at which frequencies are sampled
         recordedFrequencies.Clear(); // Clear the list of recorded frequencies
@@ -53,7 +81,7 @@ public class VoiceTypeAnalyzer : MonoBehaviour
         float elapsed = 0f;
         while (elapsed < captureDuration)
         {
-            float currentFrequency = GetFrequency();
+            float currentFrequency = analyzer.frequency;
 
             if (!float.IsNaN(currentFrequency)) // Check if the frequency is valid
             {
@@ -61,50 +89,53 @@ public class VoiceTypeAnalyzer : MonoBehaviour
             }
 
             elapsed += captureInterval;
+            OnProgress?.Invoke(elapsed);
             yield return new WaitForSeconds(captureInterval);
         }
 
-        detectedVoiceType = DetermineVoiceType(recordedFrequencies);
-        print("Detecting voice type: " + detectedVoiceType.typeName);
-        isCapturing = false; // Indicate that the capturing has ended
-    }
-
-    private VoiceTypeConfig DetermineVoiceType(List<float> frequencies)
-    {
-        if (frequencies.Count == 0)
-        {
-            return null; // If no valid frequencies were recorded
-        }
+        isCapturing = false;
 
         // Calculate the average frequency
         float averageFrequency = 0f;
-        foreach (float freq in frequencies)
+        foreach (float freq in recordedFrequencies)
         {
             averageFrequency += freq;
         }
-        averageFrequency /= frequencies.Count;
+        averageFrequency /= recordedFrequencies.Count;
+        
+        OnFinish?.Invoke(averageFrequency);
+    }
 
-        // Compare the average frequency against the configured ranges
+    public VoiceTypeConfig DetermineVoiceType(float lowestFrequency, float highestFrequency)
+    {
+        // First, check if the voice falls into the male frequency ranges
         foreach (var config in maleFreq)
         {
-            if (averageFrequency >= config.minFrequency && averageFrequency <= config.maxFrequency)
+            if (lowestFrequency >= config.minFrequency && highestFrequency <= config.maxFrequency)
             {
-                estimator.frequencyMin = config.minFrequency;
-                estimator.frequencyMax = config.maxFrequency;
-                return config; // Return the matching VoiceTypeConfig for male
+                print($"Detected Male Voice: {config.voiceType}");
+                return config; // Return the matched male voice type
             }
         }
 
+        // If no male voice types match, check the female frequency ranges
         foreach (var config in femaleFreq)
         {
-            if (averageFrequency >= config.minFrequency && averageFrequency <= config.maxFrequency)
+            if (lowestFrequency >= config.minFrequency && highestFrequency <= config.maxFrequency)
             {
-                estimator.frequencyMin = config.minFrequency;
-                estimator.frequencyMax = config.maxFrequency;
-                return config; // Return the matching VoiceTypeConfig for female
+                print($"Detected Female Voice: {config.voiceType}");
+                return config; // Return the matched female voice type
             }
         }
 
-        return null; // Return null if no match is found
+        // If no match is found, return "Unknown"
+        print("Could not determine the voice type. Returning Unknown.");
+        return new VoiceTypeConfig
+        {
+            voiceType = VoiceType.Unknown,
+            minFrequency = Mathf.FloorToInt(lowestFrequency),
+            maxFrequency = Mathf.CeilToInt(highestFrequency)
+        };
     }
+
 }

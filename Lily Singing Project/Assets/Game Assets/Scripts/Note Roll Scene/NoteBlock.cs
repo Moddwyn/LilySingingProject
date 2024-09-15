@@ -7,26 +7,10 @@ public class NoteBlock : MonoBehaviour
     [ReadOnly] public BlockPlacement blockPlacement;
     public TMP_Text noteText;
 
-    public enum Note
-    {
-        C,
-        CSharp,
-        D,
-        DSharp,
-        E,
-        F,
-        FSharp,
-        G,
-        GSharp,
-        A,
-        ASharp,
-        B
-    }
-
     public void Init(BlockPlacement placement)
     {
         blockPlacement = placement;
-        SetNoteText(blockPlacement.noteName.ToString() + blockPlacement.octave);
+        SetNoteText(Note.GetNoteNameFormatted(blockPlacement.note.noteName) + blockPlacement.note.octave);
     }
 
     public void SetNoteText(string note)
@@ -37,8 +21,7 @@ public class NoteBlock : MonoBehaviour
     [System.Serializable]
     public class BlockPlacement
     {
-        public Note noteName;
-        public int octave;
+        public Note note;
         public float startTime;
         public float endTime;
     }

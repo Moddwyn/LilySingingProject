@@ -1,16 +1,20 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using Melanchall.DryWetMidi.Core;
 using Melanchall.DryWetMidi.Interaction;
+using NaughtyAttributes;
 using UnityEngine;
 
-public class MidiFIleReader : MonoBehaviour
+public class MidiFileReader : MonoBehaviour
 {
     public string midiFileName;
-    public List<MidiNoteData> midiNotes;
+    public List<MidiNoteData> midiNoteDatas;
+    [ReadOnly] public float minFrequency;
+    [ReadOnly] public float maxFrequency;
 
-    void Start()
+    public void ConvertMidiFileToNoteData(Action OnGenerate)
     {
         if (string.IsNullOrEmpty(midiFileName))
         {
@@ -18,8 +22,9 @@ public class MidiFIleReader : MonoBehaviour
             return;
         }
 
-        midiNotes = new List<MidiNoteData>();
-        string midiFilePath = Path.Combine(Application.streamingAssetsPath, midiFileName);
+        midiNoteDatas = new List<MidiNoteData>();
+
+        string midiFilePath = Path.Combine(Application.streamingAssetsPath, midiFileName) + ".mid";
 
         if (File.Exists(midiFilePath))
         {
@@ -40,13 +45,18 @@ public class MidiFIleReader : MonoBehaviour
                     var timeInSeconds = metricTimeSpan.TotalSeconds;
                     var durationInSeconds = metricLengthSpan.TotalSeconds;
 
+                    string noteNameRaw = note.NoteName.ToString();
+                    int octave = note.Octave;
+
+                    Note.Name noteNameEnum = ParseNoteName(noteNameRaw);
+
                     MidiNoteData noteData = new MidiNoteData
                     {
-                        fullNoteName = GetFormattedNoteName(note.NoteName.ToString(), note.Octave),
+                        note = new Note { noteName = noteNameEnum, octave = octave, frequency = Note.GetFrequencyFromNote(noteNameEnum, octave) },
                         timeInSeconds = (float)timeInSeconds,
                         durationInSeconds = (float)durationInSeconds
                     };
-                    midiNotes.Add(noteData);
+                    midiNoteDatas.Add(noteData);
                 }
             }
         }
@@ -54,27 +64,57 @@ public class MidiFIleReader : MonoBehaviour
         {
             Debug.LogError($"MIDI file not found at path: {midiFilePath}");
         }
+
+        if(midiNoteDatas != null && midiNoteDatas.Count > 0)
+        {
+            SetSongFrequencyRange();
+            OnGenerate?.Invoke();
+        }
+        
     }
 
-    private string GetFormattedNoteName(string noteName, int octave)
+    void SetSongFrequencyRange()
     {
-        switch (noteName)
+        minFrequency = float.MaxValue;
+        maxFrequency = float.MinValue;
+
+        foreach (var midiNoteData in midiNoteDatas)
         {
-            case "CSharp": return $"C#{octave}";
-            case "DSharp": return $"D#{octave}";
-            case "FSharp": return $"F#{octave}";
-            case "GSharp": return $"G#{octave}";
-            case "ASharp": return $"A#{octave}";
-            default: return $"{noteName}{octave}";
+            float noteFrequency = midiNoteData.note.frequency;
+
+            if (noteFrequency < minFrequency)
+                minFrequency = noteFrequency;
+
+            if (noteFrequency > maxFrequency)
+                maxFrequency = noteFrequency;
+        }
+
+        if (midiNoteDatas.Count == 0)
+        {
+            minFrequency = 0f;
+            maxFrequency = 0f;
+        }
+    }
+
+    Note.Name ParseNoteName(string noteNameRaw)
+    {
+        switch (noteNameRaw)
+        {
+            case "CSharp": return Note.Name.CSharp;
+            case "DSharp": return Note.Name.DSharp;
+            case "FSharp": return Note.Name.FSharp;
+            case "GSharp": return Note.Name.GSharp;
+            case "ASharp": return Note.Name.ASharp;
+            default: return (Note.Name)Enum.Parse(typeof(Note.Name), noteNameRaw);
         }
     }
 
 }
 
-[System.Serializable]
+[Serializable]
 public class MidiNoteData
 {
-    public string fullNoteName;
+    public Note note;
     public float timeInSeconds;
     public float durationInSeconds;
 }

@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class MenuPages : MonoBehaviour
 {
@@ -23,5 +24,10 @@ public class MenuPages : MonoBehaviour
     public void MoveToPage(int page)
     {
         currentPage = page;
+    }
+
+    public void LoadScene(int index)
+    {
+        SceneManager.LoadScene(index);
     }
 }
