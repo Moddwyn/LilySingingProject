@@ -38,8 +38,16 @@ public class VoiceTypeAnalyzer : MonoBehaviour
     [ReadOnly] public Note highestRecorded;
     [ReadOnly] public List<float> recordedFrequencies = new List<float>(); // List to display recorded frequencies
 
+    [HorizontalLine]
+    [Header("DEBUG")]
+    public VoiceType manualVoiceType;
+
+    [HorizontalLine]
+
     public List<VoiceTypeConfig> maleFreq = new List<VoiceTypeConfig>();
     public List<VoiceTypeConfig> femaleFreq = new List<VoiceTypeConfig>();
+    [ReadOnly] public Note lowestVoiceConfigFreq;
+    [ReadOnly] public Note highestVoiceConfigFreq;
 
     [System.Serializable]
     public class VoiceTypeConfig
@@ -47,29 +55,53 @@ public class VoiceTypeAnalyzer : MonoBehaviour
         public VoiceType voiceType;
         public int minFrequency;
         public int maxFrequency;
-        public float suggestedPitch;
+    }
+
+    void OnValidate()
+    {
+        SetVoiceConfigFreqRange();
+    }
+
+    void Awake()
+    {
+        SetVoiceConfigFreqRange();
     }
 
     void Start()
     {
         detectedVoiceType = null;
-
         continueButton.gameObject.SetActive(false);
+    }
+
+    void SetVoiceConfigFreqRange()
+    {
+        lowestVoiceConfigFreq = Note.GetNoteFromFrequency(GetVoiceTypeConfig(VoiceType.Bass).minFrequency);
+        highestVoiceConfigFreq = Note.GetNoteFromFrequency(GetVoiceTypeConfig(VoiceType.Soprano).maxFrequency);
+    }
+
+    [Button]
+    public void SetManualVoiceType()
+    {
+        VoiceTypeConfig typeConfig = GetVoiceTypeConfig(manualVoiceType);
+        lowestRecorded = Note.GetNoteFromFrequency(typeConfig.minFrequency);
+        highestRecorded = Note.GetNoteFromFrequency(typeConfig.maxFrequency);
+
+        SetFinalVoiceType();
     }
 
     public void SetFinalVoiceType()
     {
-        if(lowestRecorded.frequency == 0 || highestRecorded.frequency == 0)
+        if (lowestRecorded.frequency == 0 || highestRecorded.frequency == 0)
         {
             return;
         }
         detectedVoiceType = DetermineVoiceType(lowestRecorded.frequency, highestRecorded.frequency);
-        resultText.text = $"You are a {detectedVoiceType.voiceType}!";
+        resultText.text = $"You were identified as {detectedVoiceType.voiceType}!";
 
         continueButton.gameObject.SetActive(true);
     }
 
-    public IEnumerator CaptureVoiceType(Action<float> OnProgress ,Action<float> OnFinish)
+    public IEnumerator CaptureVoiceType(Action<float> OnProgress, Action<float> OnFinish)
     {
         isCapturing = true; // Indicate that the capturing has started
 
@@ -102,7 +134,7 @@ public class VoiceTypeAnalyzer : MonoBehaviour
             averageFrequency += freq;
         }
         averageFrequency /= recordedFrequencies.Count;
-        
+
         OnFinish?.Invoke(averageFrequency);
     }
 
@@ -129,13 +161,69 @@ public class VoiceTypeAnalyzer : MonoBehaviour
         }
 
         // If no match is found, return "Unknown"
-        print("Could not determine the voice type. Returning Unknown.");
-        return new VoiceTypeConfig
+        float averageFrequency = (lowestFrequency + highestFrequency) / 2;
+
+        VoiceTypeConfig closestMatch = GetClosestVoiceType(averageFrequency);
+        print($"Could not determine voice type directly. Returning closest match: {closestMatch.voiceType}");
+        return closestMatch;
+    }
+
+    VoiceTypeConfig GetClosestVoiceType(float averageFrequency)
+    {
+        VoiceTypeConfig closestConfig = null;
+        float closestDifference = float.MaxValue;
+
+        // Check male frequency ranges
+        foreach (var config in maleFreq)
         {
-            voiceType = VoiceType.Unknown,
-            minFrequency = Mathf.FloorToInt(lowestFrequency),
-            maxFrequency = Mathf.CeilToInt(highestFrequency)
-        };
+            float configAvg = (config.minFrequency + config.maxFrequency) / 2;
+            float difference = Mathf.Abs(averageFrequency - configAvg);
+
+            if (difference < closestDifference)
+            {
+                closestDifference = difference;
+                closestConfig = config;
+            }
+        }
+
+        // Check female frequency ranges
+        foreach (var config in femaleFreq)
+        {
+            float configAvg = (config.minFrequency + config.maxFrequency) / 2;
+            float difference = Mathf.Abs(averageFrequency - configAvg);
+
+            if (difference < closestDifference)
+            {
+                closestDifference = difference;
+                closestConfig = config;
+            }
+        }
+
+        return closestConfig;
+    }
+
+    public VoiceTypeConfig GetVoiceTypeConfig(VoiceType voiceType)
+    {
+        // Search through male frequencies first
+        foreach (var config in maleFreq)
+        {
+            if (config.voiceType == voiceType)
+            {
+                return config;
+            }
+        }
+
+        // Search through female frequencies if not found in maleFreq
+        foreach (var config in femaleFreq)
+        {
+            if (config.voiceType == voiceType)
+            {
+                return config;
+            }
+        }
+
+        // Return null or a default value if no match is found
+        return null;  // or you can return a default VoiceTypeConfig if needed
     }
 
 }

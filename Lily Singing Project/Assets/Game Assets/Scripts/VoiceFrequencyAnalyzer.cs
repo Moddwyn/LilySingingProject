@@ -1,14 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
 using NaughtyAttributes;
+using TMPro;
 using UnityEngine;
 
 public class VoiceFrequencyAnalyzer : MonoBehaviour
 {
     public AudioSource audioSource;
-
-    [Tooltip("Recording duration in seconds")]
-    public int duration = 2;
 
     [Tooltip("Minimum frequency for pitch detection [Hz]")]
     [Range(40, 300)]
@@ -30,7 +28,9 @@ public class VoiceFrequencyAnalyzer : MonoBehaviour
 
     [HorizontalLine]
 
+    public TMP_Text liveNoteTextDisplay;
     [ReadOnly] public float frequency;
+
 
     const int spectrumSize = 1024;
     const int outputResolution = 200; // Frequency axis resolution for SRH
@@ -44,16 +44,46 @@ public class VoiceFrequencyAnalyzer : MonoBehaviour
 
     void Start()
     {
-        // Start recording audio
-        audioSource.loop =  true;
-        audioSource.playOnAwake = false;
-        audioSource.clip = Microphone.Start(string.Empty, audioSource.loop, duration, AudioSettings.outputSampleRate);
-        audioSource.Play();
+        Application.runInBackground = true;
+        StartMicrophone();
     }
 
+    void OnApplicationFocus(bool hasFocus)
+    {
+        // if (hasFocus)
+        // {
+        //     StartMicrophone();
+        // }
+    }
+
+    void StartMicrophone()
+    {
+        if (Microphone.IsRecording(null))
+        {
+            audioSource.Stop();
+            audioSource.clip = null;
+            Microphone.End(null); // Stop the current recording
+        }
+
+        // Restart the microphone recording
+        int maxFreq;
+        Microphone.GetDeviceCaps(null, out _, out maxFreq);
+        int freq = Mathf.Min(44100, maxFreq);
+
+        audioSource.clip = Microphone.Start(null, true, 5, freq);
+        audioSource.loop = true;
+
+        while (Microphone.GetPosition(null) <= 0)
+        {
+        }
+        audioSource.Play();
+    }
     void Update()
     {
         frequency = EstimatePitch();
+
+        Note frequencyNote = Note.GetNoteFromFrequency(frequency);
+        liveNoteTextDisplay.text = float.IsNaN(frequency)? "NaN" : Note.GetNoteNameFormatted(frequencyNote.noteName)+frequencyNote.octave;
     }
 
     /// <summary>

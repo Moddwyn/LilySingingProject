@@ -59,7 +59,6 @@ public class Note
         return frequency;
     }
 
-
     public static string GetNoteNameFormatted(Name name)
     {
         switch (name)
@@ -72,20 +71,4 @@ public class Note
             default: return name.ToString(); // Return the note name as it is for non-sharp notes
         }
     }
-
-    public static Note GetNextNoteWithOctave(Note originalNote)
-    {
-        // Shift the note by one semitone
-        Note.Name nextNote = (Note.Name)(((int)originalNote.noteName + 1) % 12); // Shift up by one semitone
-        int nextOctave = originalNote.noteName == Note.Name.B ? originalNote.octave + 1 : originalNote.octave; // Increment octave if the note is B
-
-        // Return a new Note object with the shifted note name and octave
-        return new Note
-        {
-            noteName = nextNote,
-            octave = nextOctave,
-            frequency = Note.GetFrequencyFromNote(nextNote, nextOctave) // Optionally recalculate the frequency for the new note
-        };
-    }
-
 }

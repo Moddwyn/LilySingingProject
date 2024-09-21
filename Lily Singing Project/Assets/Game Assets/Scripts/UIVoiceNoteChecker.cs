@@ -31,7 +31,7 @@ public class UIVoiceNoteChecker : MonoBehaviour
 
         display.onClick.AddListener(() =>
         {
-            if(recording == false)
+            if (recording == false)
                 StartCoroutine(StartRecording());
         });
     }
@@ -43,7 +43,7 @@ public class UIVoiceNoteChecker : MonoBehaviour
         recording = true;
         countdownTime = 3;
 
-        while(countdownTime > 0)
+        while (countdownTime > 0)
         {
             SetDisplayText(countdownTime + "");
             countdownTime -= 1;
@@ -59,24 +59,47 @@ public class UIVoiceNoteChecker : MonoBehaviour
         },
         (frequency) =>
         {
-            Note recordedNote = Note.GetNoteFromFrequency(frequency);
-            SetDisplayText(Note.GetNoteNameFormatted(recordedNote.noteName) + "" + recordedNote.octave);
-
-            if(checkingType == CheckingType.Low)
+            if (IsFrequencyOutOfBounds(frequency))
             {
-                typeAnalyzer.lowestRecorded = recordedNote;
+                // If the frequency is out of bounds, set the text to "Try again"
+                SetDisplayText("Try again");
             }
             else
             {
-                typeAnalyzer.highestRecorded = recordedNote;
+                Note recordedNote = Note.GetNoteFromFrequency(frequency);
+                SetDisplayText(Note.GetNoteNameFormatted(recordedNote.noteName) + "" + recordedNote.octave);
+
+                if (checkingType == CheckingType.Low)
+                {
+                    typeAnalyzer.lowestRecorded = recordedNote;
+                }
+                else
+                {
+                    typeAnalyzer.highestRecorded = recordedNote;
+                }
+
+                typeAnalyzer.SetFinalVoiceType();
             }
-
-            typeAnalyzer.SetFinalVoiceType();
         }));
-
-        
-
         recording = false;
+    }
+
+    bool IsFrequencyOutOfBounds(float frequency)
+    {
+        foreach (var config in typeAnalyzer.maleFreq)
+        {
+            if (frequency >= config.minFrequency && frequency <= config.maxFrequency)
+                return false;
+        }
+
+        foreach (var config in typeAnalyzer.femaleFreq)
+        {
+            if (frequency >= config.minFrequency && frequency <= config.maxFrequency)
+                return false;
+        }
+
+        // If frequency doesn't fall within any valid range, it's out of bounds
+        return true;
     }
 
     void SetDisplayText(string text)

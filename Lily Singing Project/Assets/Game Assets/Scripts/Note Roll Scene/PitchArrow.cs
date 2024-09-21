@@ -7,6 +7,7 @@ public class PitchArrow : MonoBehaviour
 {
     public VoiceFrequencyAnalyzer frequencyAnalyzer;
     public VoiceTypeAnalyzer typeAnalyzer;
+    public SongManager songManager;
     public MidiFileReader midiFileReader;
     public AudioSource audioSource;
 
@@ -24,20 +25,15 @@ public class PitchArrow : MonoBehaviour
         Note note = Note.GetNoteFromFrequency(frequency);
         if (frequency > 0)
         {
-            float minFrequency = typeAnalyzer.detectedVoiceType.minFrequency-50;
-            float maxFrequency = typeAnalyzer.detectedVoiceType.maxFrequency+50;
-
-            // Note shiftedNote = Note.GetNextNoteWithOctave(note);
+            float minFrequency = songManager.currentLowestSongAdjustedNote.frequency;
+            float maxFrequency = songManager.currentHighestSongAdjustedNote.frequency;
 
             float newYPos = RollManager.MapFrequencyToPosition(note.frequency, minFrequency, maxFrequency, yRange.x, yRange.y);
             SetArrowPosition(newYPos);
 
             noteText.text = $"{Note.GetNoteNameFormatted(note.noteName)}{note.octave} | {(int)frequency}Hz";
         }
-
     }
-
-    
 
     void SetArrowPosition(float yPos)
     {
